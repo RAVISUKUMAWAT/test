@@ -3,7 +3,9 @@ var router = express.Router();
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
+  const apiKey = process.env.API_KEY || '';
+  console.log("apiKey", apiKey);
+  res.send(apiKey);
 });
 
 module.exports = router;
