@@ -5,11 +5,34 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const AWS = require('aws-sdk');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 var app = express();
+
+AWS.config.update({
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  region: process.env.AWS_REGION,
+});
+
+// Create a Secrets Manager client
+const client = new AWS.SecretsManager({
+  region: 'ap-south-1'
+});
+
+// Retrieve the secret value
+client.getSecretValue({ SecretId: 'test' }, function(err, data) {
+  if (err) {
+    console.error(err);
+  } else {
+    const secret = JSON.parse(data.SecretString);
+    // Set the secret values as environment variables
+    process.env.DB_USERNAME = secret.username;
+  }
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

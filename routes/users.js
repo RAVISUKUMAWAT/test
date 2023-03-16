@@ -20,4 +20,9 @@ router.get('/server', function(req, res, next) {
   res.send({ key });
 });
 
+router.get('/aws', function(req, res, next) {
+  const key = process.env.DB_USERNAME || '';
+  res.send({ key });
+});
+
 module.exports = router;
