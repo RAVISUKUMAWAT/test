@@ -15,5 +15,9 @@ router.get('/json', function(req, res, next) {
   res.send({ dbConfig });
 });
 
+router.get('/server', function(req, res, next) {
+  const key = process.env.SER_KEY || '';
+  res.send({ key });
+});
 
 module.exports = router;
